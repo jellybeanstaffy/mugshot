@@ -1,1 +1,57 @@
+from tkinter import *
+from tkinter import messagebox
+from time import sleep
+import urllib.request
+def center(win):
+    win.update_idletasks()
+    width = win.winfo_width()
+    height = win.winfo_height()
+    x = (win.winfo_screenwidth() // 2) - (width // 2)
+    y = (win.winfo_screenheight() // 2) - (height // 2)
+    win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+p=Tk()
+canvas = Canvas(p, width = 600, height = 450,highlightthickness=0)      
+canvas.grid(row=0,column=0,sticky='N')
+p.overrideredirect(True)
+for x in range(0,90):
+    img = PhotoImage(file='frame_'+str(x)+'_delay-0.03s.gif')
+    canvas.create_image(0,0, anchor=NW, image=img)
+    center(p)
+    p.update()
+    sleep(0.01)
+def update():
+    response=urllib.request.urlopen('https://raw.githubusercontent.com/jellybeanstaffy/mugshot/mugshot/update')
+    text = str(response.read())
+    text = text.split('\\n')
+    with open('client.py','w')as w:
+        for item in text:
+            w.write(item)
+def settings():
+    settings=Tk()
+    settings.geometry('600x450')
+    center(settings)
+    settings.configure(bg='#211F25')
+    settings.overrideredirect(True)
+    Button(settings,font=('',20),text='⮘',fg='#02F195',bg='#211F25',command=settings.destroy,borderwidth=0).grid(row=0,column=0,sticky=NW)
+    Button(settings,font=('',20),text='UPDATE',fg='#02F195',bg='#211F25',command=update,borderwidth=0).grid(row=1,column=1)
+for y in range(89,-1,-1):
+    img = PhotoImage(file='frame_'+str(y)+'_delay-0.03s.gif')
+    canvas.create_image(0,0, anchor=NW, image=img)
+    center(p)
+    p.update()
+    sleep(0.01)
+p.destroy()
+window=Tk()
+window.overrideredirect(True)
+canvas = Canvas(window, width = 600, height = 450,highlightthickness=0)      
+canvas.grid(row=0,column=0,sticky='N')
+for x in range(0,90):
+    img = PhotoImage(file='frame_'+str(x)+'_delay-0.03s.gif')
+    canvas.create_image(0,0, anchor=NW, image=img)
+    center(window)
+    window.update()
+    sleep(0.01)
+Label(window,text='Ready',font=('',20),fg='#02F195',bg='#211F25').grid(row=0,column=0,sticky='S')
+Button(window,text='⚙',font=('',20),fg='#02F195',bg='#211F25',command=settings,borderwidth=0).grid(row=0,column=0,sticky=NW)
+Button(window,text='×',bg='#211F25',fg='#02F195',font=('',20),command=quit,borderwidth=0).grid(row=0,column=0,sticky=NE)
 
